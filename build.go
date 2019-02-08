@@ -7,9 +7,9 @@ import (
 )
 
 func main() {
-	version, err := build.GetVersion()
+	err := build.WriteConfig()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(version)
+	fmt.Println("Build configured")
 }

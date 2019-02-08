@@ -3,6 +3,7 @@ package net
 import (
 	"fmt"
 
+	"../buildconfig"
 	"./tcp"
 )
 
@@ -19,7 +20,7 @@ func StartServer(address string) error {
 				fmt.Printf("Started server on %s.\n", addr)
 				break
 			case client := <-listener.OnConnect:
-				client.Stream <- []byte("Hello, world!")
+				client.Stream <- []byte(fmt.Sprintf("%s (%s)\nOfficial Server\nOK\n", buildconfig.Config.Product, buildconfig.Config.Version))
 				break
 			case err := <-listener.OnError:
 				fmt.Println(err)
