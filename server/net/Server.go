@@ -20,7 +20,10 @@ func StartServer(address string) error {
 				fmt.Printf("Started server on %s.\n", addr)
 				break
 			case client := <-listener.OnConnect:
-				client.Stream <- []byte(fmt.Sprintf("%s (%s)\nOfficial Server\nOK\n", buildconfig.Config.Product, buildconfig.Config.Version))
+				go func() {
+					client.Stream <- []byte(fmt.Sprintf("%s (%s)\nOfficial Server\nOK\n", buildconfig.Config.Product, buildconfig.Config.Version))
+					DoLogin(client)
+				}()
 				break
 			case err := <-listener.OnError:
 				fmt.Println(err)
