@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export MONGO_INITDB_ROOT_PASSWORD=$(cat $MONGO_INITDB_ROOT_PASSWORD_FILE)
+unset MONGO_INITDB_ROOT_PASSWORD_FILE
+
+exec docker-entrypoint.sh $*

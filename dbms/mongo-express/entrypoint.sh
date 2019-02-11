@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export ME_CONFIG_MONGODB_ADMINPASSWORD=$(cat $ME_CONFIG_MONGODB_ADMINPASSWORD_FILE)
+unset ME_CONFIG_MONGODB_ADMINPASSWORD_FILE
+
+exec tini -- /docker-entrypoint.sh $*
