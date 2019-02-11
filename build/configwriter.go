@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 )
 
+// WriteConfig writes the configuration file (server/buildconfig/config.go)
 func WriteConfig() error {
 	version, err := GetVersion()
 	if err != nil {
@@ -14,7 +15,8 @@ func WriteConfig() error {
 package buildconfig
 
 var (
-	Config BuildConfig = BuildConfig {
+	// Config is the configuration that is available at compile time
+	Config = BuildConfig {
 		Product: "Mars Decimation",
 		Version: "%s",
 	}

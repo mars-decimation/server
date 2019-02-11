@@ -6,6 +6,7 @@ import (
 	"./build"
 )
 
+// main writes the build configuration
 func main() {
 	err := build.WriteConfig()
 	if err != nil {

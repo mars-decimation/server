@@ -4,6 +4,7 @@ import (
 	git "gopkg.in/libgit2/git2go.v24"
 )
 
+// GetVersion determines what the current version string for the server is
 func GetVersion() (string, error) {
 	repo, err := git.OpenRepository(".")
 	if err != nil {

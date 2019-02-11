@@ -7,6 +7,7 @@ import (
 	"./tcp"
 )
 
+// StartServer runs the server networking code and blocks forever
 func StartServer(address string) error {
 	listener := tcp.Listener{
 		OnListen:  make(chan string),

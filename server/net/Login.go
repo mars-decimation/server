@@ -6,17 +6,30 @@ import (
 	"./tcp"
 )
 
+// LoginStatus is one of the status codes that can be returned as a result of a login packet
 type LoginStatus byte
 
 const (
-	Success              LoginStatus = 0x00
-	InvalidCredentials   LoginStatus = 0x01
-	UnverifiedAccount    LoginStatus = 0x02
-	EmailAlreadyTaken    LoginStatus = 0x80
+	// Success represents a successful action
+	Success LoginStatus = 0x00
+	// InvalidCredentials means either a username, password, or email address was incorrect
+	InvalidCredentials LoginStatus = 0x01
+	// UnverifiedAccount means the email address associated with the account has not yet been verified, so the login
+	// cannot complete
+	UnverifiedAccount LoginStatus = 0x02
+	// EmailAlreadyTaken is returned when a user is trying to register an account with an email address that already has
+	// an account
+	EmailAlreadyTaken LoginStatus = 0x80
+	// UsernameAlreadyTaken is returned when a user is trying to register an account with a username that is already
+	// associated with another account
 	UsernameAlreadyTaken LoginStatus = 0x81
-	InsecurePassword     LoginStatus = 0x82
+	// InsecurePassword is returned when the password a user tries to set is too insecure and therefore should not be
+	// used.  An insecure password will not be accepted by the server.
+	InsecurePassword LoginStatus = 0x82
 )
 
+// DoLogin performs the login protocol and blocks until the login either fails or completes successfully.  In the event
+// of a successful return from this method, the client has been authenticated.
 func DoLogin(client *tcp.Client) error {
 	for {
 		select {
@@ -70,22 +83,27 @@ func DoLogin(client *tcp.Client) error {
 	}
 }
 
+// TryLogin handles a login packet
 func TryLogin(username string, password string) LoginStatus {
 	return Success
 }
 
+// RegisterAccount handles an account registration packet
 func RegisterAccount(username string, email string, password string) LoginStatus {
 	return Success
 }
 
+// SendPasswordEmailByUser handles a forgotten password packet when the remembered information is an email address
 func SendPasswordEmailByUser(username string) LoginStatus {
 	return Success
 }
 
+// SendPasswordEmailByEmail handles a forgotten password packet when the remembered information is a username
 func SendPasswordEmailByEmail(email string) LoginStatus {
 	return Success
 }
 
+// RecoverPassword handles a password recovery packet
 func RecoverPassword(token string, password string) LoginStatus {
 	return Success
 }
