@@ -16,35 +16,35 @@ type Client struct {
 }
 
 // Close disconnects the client
-func (this *Client) Close() {
-	this.IsClosed = true
-	this.Socket.Close()
+func (client *Client) Close() {
+	client.IsClosed = true
+	client.Socket.Close()
 }
 
 // Receive runs a loop (and blocks forever) to read packets from the socket
-func (this *Client) Receive() {
+func (client *Client) Receive() {
 	for {
 		message := make([]byte, PacketLength)
-		len, err := this.Socket.Read(message)
+		len, err := client.Socket.Read(message)
 		if err != nil {
-			if !this.IsClosed {
-				this.OnDisconnect <- err
-				this.Close()
+			if !client.IsClosed {
+				client.OnDisconnect <- err
+				client.Close()
 			}
 			break
 		}
 		if len > 0 {
-			this.Stream <- message[0:len]
+			client.Stream <- message[0:len]
 		}
 	}
 }
 
 // Send runs a loop (and blocks forever) to send packets to the socket
-func (this *Client) Send() {
+func (client *Client) Send() {
 	for {
 		select {
-		case msg := <-this.Stream:
-			this.Socket.Write(msg)
+		case msg := <-client.Stream:
+			client.Socket.Write(msg)
 		}
 	}
 }

@@ -11,21 +11,21 @@ type Listener struct {
 
 // Start runs the loop (and blocks forever) to accept new clients to the server.  This will automatically set up the
 // client to asynchronously read and send packets using its stream.
-func (this *Listener) Start(address string) error {
+func (obj *Listener) Start(address string) error {
 	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		return err
 	}
 	defer func() {
 		if err := listener.Close(); err != nil {
-			this.OnError <- err
+			obj.OnError <- err
 		}
 	}()
-	this.OnListen <- address
+	obj.OnListen <- address
 	for {
 		cxn, err := listener.Accept()
 		if err != nil {
-			this.OnError <- err
+			obj.OnError <- err
 		}
 		client := &Client{
 			Socket:       cxn,
@@ -35,6 +35,6 @@ func (this *Listener) Start(address string) error {
 		}
 		go client.Receive()
 		go client.Send()
-		this.OnConnect <- client
+		obj.OnConnect <- client
 	}
 }
